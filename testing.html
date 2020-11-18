@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies!</title>
+    <script src="./src/plugins/movieDB.js"></script>
+</head>
+<body>
+
+    <ul>
+        <li id="fightClub"></li>
+        <br>
+        <h2>Now Playing in theaters!</h2>
+        <ul>
+           <li id="nowPlaying"></li> 
+           <!-- <ul>
+                <li id="movieDetails"></li>
+           </ul> -->
+        </ul>
+        
+    </ul>
+    
+</body>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        //import axios from 'axios'
+        
+        const movieDB_url = "http://api.themoviedb.org/3/";
+        const fightClub_url = 'https://api.themoviedb.org/3/movie/550?api_key=22291b84074a8a7ddb5b1547378f77e7'
+        const nowPlaying_url = 'https://api.themoviedb.org/3/movie/now_playing?api_key=22291b84074a8a7ddb5b1547378f77e7&language=en-US&page=1'
+        
+        async function getFightClub(){
+            const response = await fetch(fightClub_url)
+            const data = await response.json();
+            console.log(data);
+            document.getElementById("fightClub").textContent = data.title;
+        };
+
+        async function getMovies(){
+            let response = await fetch(nowPlaying_url)
+            let data = await response.json();
+            console.log(data)
+            let movieOne = JSON.stringify(data.results[0].title)
+            console.log(data.results[1])
+
+            var moviesNowPlaying = document.getElementById("nowPlaying");
+            var movieDetails = document.getElementById("movieDetails");
+
+            for (i = 0; i < data.results.length; i++) {
+                    //console.log(data.results[i].title);
+                    var li = document.createElement("li");
+                    var details = document.createElement("li")
+                    li.innerHTML = data.results[i].title + "<br />" + "<ul>" + data.results[i].overview;
+                    //details.innerHTML = data.results[i].overview;
+                    moviesNowPlaying.appendChild(li)
+                    //movieDetails.appendChild(details)
+                } 
+            }
+        
+
+        
+        getMovies();
+        getFightClub();
+    </script>
+</html>
